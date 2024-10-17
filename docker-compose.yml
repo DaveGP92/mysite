@@ -1,0 +1,23 @@
+services: # Define los diferentes servicios que conforman tu aplicación. 
+  web: # Servicio para tu aplicación Django (web)
+    build: . #Indica que debe construir la imagen desde el Dockerfile presente en el directorio actual.
+    command: python manage.py runserver 0.0.0.0:8000 #Especifica el comando que se ejecutará cuando se inicie el contenedor.
+    volumes:
+      - .:/app #Monta el directorio actual en el contenedor (/app) para que puedas ver los cambios en tiempo real.
+    ports:
+      - "8000:8000" #Mapea el puerto del contenedor al puerto de tu máquina local para que puedas acceder a la aplicación.
+    depends_on:
+      - db #Asegura que el contenedor de la base de datos (db) esté disponible antes de iniciar el contenedor de la aplicación web.
+  db: # servicio para MySQL
+    image: mysql:8.0 # Imagen oficial de MySQL.
+    restart: always # Configura el contenedor para que se reinicie automáticamente si falla.
+    environment: # Aquí defines las variables de entorno necesarias para configurar MySQL, como la contraseña del root, el nombre de la base de datos, y el usuario.
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_db
+      MYSQL_USER: dave
+      MYSQL_PASSWORD: dave_password
+    volumes:
+      - db_data:/var/lib/mysql #Define un volumen para persistir los datos de la base de datos.
+  
+volumes:
+  db_data: #Declara un volumen que se usará para almacenar los datos de MySQL.
