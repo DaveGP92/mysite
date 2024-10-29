@@ -9,5 +9,11 @@
     <p class="date">
         published {{ post.publish }}, by {{ post.author }}
     </p>
+    <p>
+        <a href="{% url 'post_share' post.id %}">
+
+            Share this post
+        </a>
+    </p>
     
 {% endblock %}

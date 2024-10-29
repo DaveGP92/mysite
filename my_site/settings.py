@@ -133,7 +133,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'your_account@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'gonzalezdave611@gmail.com'
+EMAIL_HOST_PASSWORD = 'edjg cjgc sfdm rxpj'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
