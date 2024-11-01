@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -10,3 +10,10 @@ class PostAdmin(admin.ModelAdmin):
     raw_id_fields = ['author'] # Convierte el campo author en un campo de búsqueda con un selector desplegable en la interfaz de administración.
     date_hierarchy = 'publish' # Agrega un filtro jerárquico por fecha en la parte superior de la página de listado de posts.
     ordering = ['status', 'publish'] # Define el orden predeterminado de los posts en la página de listado.
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'post', 'created', 'active']
+    list_filter = ['active', 'created', 'updated']
+    search_fields = ['name', 'email', 'body']
