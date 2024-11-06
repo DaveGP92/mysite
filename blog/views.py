@@ -4,34 +4,40 @@ from django.views.generic import ListView
 from .models import Post, Comment
 from . forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
+from taggit.models import Tag
 
 from django.views.decorators.http import require_POST
 
 
-# def posts_list(request): # --> Function-based view
-#     posts_list = Post.published.all()
-#     paginator = Paginator(posts_list, 3)
-#     page_number = request.GET.get('page', 1)
+def posts_list(request, tag_slug=None): # --> Function-based view
+    posts_list = Post.published.all()
+    tag = None
     
-#     try:
-#         posts = paginator.page(page_number)
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts_list = posts_list.filter(tags__in=[tag ])
+    paginator = Paginator(posts_list, 3)
+    page_number = request.GET.get('page', 1)
+    
+    try:
+        posts = paginator.page(page_number)
 
-#     except EmptyPage:
-#         posts = paginator.page(paginator.num_pages)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
 
-#     except PageNotAnInteger:
-#         posts = paginator.page(1)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
 
-#     return render(request, 'blog/post/list.html', {
-#         'posts': posts
-#     })
+    return render(request, 'blog/post/list.html', {
+        'posts': posts, 'tag': tag
+    })
 
 
-class PostListView(ListView): # --> Class-based view
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 3
-    template_name = 'blog/post/list.html'
+# class PostListView(ListView): # --> Class-based view
+#     queryset = Post.published.all()
+#     context_object_name = 'posts'
+#     paginate_by = 3
+#     template_name = 'blog/post/list.html'
 
 
 def post_share(resquest, post_id):
